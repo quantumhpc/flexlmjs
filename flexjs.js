@@ -22,7 +22,7 @@
 */
 
 // Fill out lmutil full path
-var flexBinary = '/opt/bin/flex/lmutil';
+var flexBinary = '../../binaries/lmutil';
 var flexCmd = 'lmstat -a -c ';
 
 var cproc = require('child_process');
@@ -42,19 +42,19 @@ var vendorInfo;
 // serverURL can be used to test with the output of lmstat stored in a file by sending an array ['test',filePath]
 function lmstat(serverURL, callback){
   // Create Stream
-  var output;
+  var output = [];
   if (serverURL[0] === 'test'){
-    output = fs.readFileSync(serverURL[1],'utf8');
+    var outputFile = fs.readFileSync(serverURL[1],'utf8');
+    output.stdout = outputFile;
   }else{
-    output = spawn(flexBinary, flexCmd + serverURL, { encoding : 'utf8' });
+    output = spawn(flexBinary, [flexCmd,serverURL], { encoding : 'utf8' });
   }
   
   // Transmit the error if any
   if (output.stderr){
       return callback(new Error(output.stderr.replace(/\n/g,"")));
   }
-  //output = output.stdout.split('\n');
-  output = output.split('\n');
+  output = output.stdout.split('\n');
 
   for (var i=0; i<output.length; i++){
     // Line by line
