@@ -22,8 +22,8 @@
 */
 
 // Fill out lmutil full path
-var flexBinary = '../../binaries/lmutil';
-var flexCmd = 'lmstat -a -c ';
+var flexBinary = '/opt/flexlm/lmutil';
+var flexCmd = ['lmstat','-a','-c'];
 
 var cproc = require('child_process');
 var spawn = cproc.spawnSync;
@@ -47,13 +47,19 @@ function lmstat(serverURL, callback){
     var outputFile = fs.readFileSync(serverURL[1],'utf8');
     output.stdout = outputFile;
   }else{
-    output = spawn(flexBinary, [flexCmd,serverURL], { encoding : 'utf8' });
+    flexCmd.push(serverURL);
+    output = spawn(flexBinary, flexCmd, { encoding : 'utf8' });
   }
   
+  // Invalid lmutil binary
+  if (output.error){
+      return callback(new Error(output.error));
+  }
   // Transmit the error if any
   if (output.stderr){
       return callback(new Error(output.stderr.replace(/\n/g,"")));
   }
+  // Treat output
   output = output.stdout.split('\n');
 
   for (var i=0; i<output.length; i++){
