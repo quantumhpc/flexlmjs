@@ -23,7 +23,7 @@
 
 // Fill out lmutil full path
 var flexBinary = '/opt/flexlm/lmutil';
-var flexCmd = ['lmstat','-a','-c'];
+var defaultCmd = ['lmstat','-a','-c'];
 
 var cproc = require('child_process');
 var spawn = cproc.spawnSync;
@@ -41,6 +41,11 @@ var vendorInfo;
 // Parse the output of lmutil lmstat and return a JSON array
 // serverURL can be used to test with the output of lmstat stored in a file by sending an array ['test',filePath]
 function lmstat(serverURL, callback){
+  var flexCmd = [];
+  for(var c in defaultCmd){
+    flexCmd.push(defaultCmd[c]);
+  }
+  console.log(flexCmd);
   // Create Stream
   var output = [];
   if (serverURL[0] === 'test'){
