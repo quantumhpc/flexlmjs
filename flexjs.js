@@ -21,10 +21,6 @@
  * or other dealings in the Software.
 */
 
-// Fill out lmutil full path
-var flexBinary = '/opt/flexlm/lmutil';
-var defaultCmd = ['lmstat','-a','-c'];
-
 var cproc = require('child_process');
 var spawn = cproc.spawnSync;
 var fs = require('fs');
@@ -40,20 +36,17 @@ var vendorInfo;
 
 // Parse the output of lmutil lmstat and return a JSON array
 // serverURL can be used to test with the output of lmstat stored in a file by sending an array ['test',filePath]
-function lmstat(serverURL, callback){
-  var flexCmd = [];
-  for(var c in defaultCmd){
-    flexCmd.push(defaultCmd[c]);
-  }
-  console.log(flexCmd);
+function lmstat(flexConfig, callback){
+  var flexCmd = flexConfig.flexCmd;
+  
   // Create Stream
   var output = [];
-  if (serverURL[0] === 'test'){
-    var outputFile = fs.readFileSync(serverURL[1],'utf8');
+  if (flexConfig.serverURL[0] === 'test'){
+    var outputFile = fs.readFileSync(flexConfig.serverURL[1],'utf8');
     output.stdout = outputFile;
   }else{
-    flexCmd.push(serverURL);
-    output = spawn(flexBinary, flexCmd, { encoding : 'utf8' });
+    flexCmd.push(flexConfig.serverURL);
+    output = spawn(flexConfig.flexBinary, flexCmd, { encoding : 'utf8' });
   }
   
   // Invalid lmutil binary
