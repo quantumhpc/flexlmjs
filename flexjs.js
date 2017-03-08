@@ -24,6 +24,7 @@
 var cproc = require('child_process');
 var spawn = cproc.spawnSync;
 var fs = require('fs');
+var path = require('path');
 
 // Regex for lmstat output
 var featureRegEx=/^Users of ([^:]*):[^0-9:]*([0-9]+)[^0-9]*([0-9]+)[^0-9]*([\)]+)/;
@@ -37,7 +38,7 @@ var vendorInfo;
 // Parse the output of lmutil lmstat and return a JSON array
 // serverURL can be used to test with the output of lmstat stored in a file by sending an array ['test',filePath]
 function lmstat(flexConfig, callback){
-  var flexCmd = flexConfig.flexCmd;
+  var flexCmd = flexConfig.flexCmd.trim().split(/\s/g);
   
   // Create Stream
   var output = [];
@@ -46,9 +47,9 @@ function lmstat(flexConfig, callback){
     output.stdout = outputFile;
   }else{
     flexCmd.push(flexConfig.serverURL);
-    output = spawn(flexConfig.flexBinary, flexCmd, { encoding : 'utf8' });
+    output = spawn(path.resolve(flexConfig.flexBinary), flexCmd, { encoding : 'utf8' });
   }
-  
+  // console.log(output)
   // Invalid lmutil binary
   if (output.error){
       return callback(new Error(output.error));
