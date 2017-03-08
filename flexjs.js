@@ -49,7 +49,7 @@ function lmstat(flexConfig, callback){
     flexCmd.push(flexConfig.serverURL);
     output = spawn(path.resolve(flexConfig.flexBinary), flexCmd, { encoding : 'utf8' });
   }
-  // console.log(output)
+  
   // Invalid lmutil binary
   if (output.error){
       return callback(new Error(output.error));
