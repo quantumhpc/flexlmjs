@@ -47,7 +47,7 @@ function lmstat(flexConfig, callback){
     output.stdout = outputFile;
   }else{
     flexCmd.push(flexConfig.serverURL);
-    output = spawn(path.resolve(flexConfig.flexBinary), flexCmd, { encoding : 'utf8' });
+    output = spawn(path.resolve(flexConfig.flexBinary + (/^win/.test(process.platform) ? (!flexConfig.flexBinary.endsWith(".exe") ? '.exe' : '') : '')), flexCmd, { encoding : 'utf8' });
   }
   
   // Invalid lmutil binary
