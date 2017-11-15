@@ -31,13 +31,13 @@ var featureRegEx=/^Users of ([^:]*):[^0-9:]*([0-9]+)[^0-9]*([0-9]+)[^0-9]*([\)]+
 var errorRegEx=/^Users of ([^:]*):[^0-9]*(Error)[^0-9]*([0-9]+)[^0-9]*,([^:]*)([\)]+)/;
 var versionTokenRegEx=/\s*([^\s]*)\s+([^\s,]*),\s+([^\s]*)\s+([^\s,]*),\s+([^\s]*)\s+([^\s,]*)/;
 var userTokenRegEx=/([^\s]*)\s+([^\s]*)\s+([^\s]*)\s+\(([^\s]*)\)\s+\(([^\)]*)\),\s+([^\s]*)\s(.*)/;
-var result = {};
-var tokenFeature;
-var vendorInfo;
 
 // Parse the output of lmutil lmstat and return a JSON array
 // serverURL can be used to test with the output of lmstat stored in a file by sending an array ['test',filePath]
 function lmstat(flexConfig, callback){
+  var result = {};
+  var tokenFeature;
+  var vendorInfo;
   var flexCmd = flexConfig.flexCmd.trim().split(/\s/g);
   
   // Create Stream
@@ -59,8 +59,9 @@ function lmstat(flexConfig, callback){
       return callback(new Error(output.stderr.replace(/\n/g,"")));
   }
   // Treat output
+  // console.log(output.stdout)
   output = output.stdout.split('\n');
-
+  
   for (var i=0; i<output.length; i++){
     // Line by line
     var line = output[i];
@@ -113,10 +114,11 @@ function lmstat(flexConfig, callback){
       }
     }
   }
+  
   // Return result table
   return callback(null, result);
 }
 
 module.exports = {
-    lmstat           : lmstat,
+    lmstat           : lmstat
 };
