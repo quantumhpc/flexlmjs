@@ -30,7 +30,7 @@ var path = require('path');
 var featureRegEx=/^Users of ([^:]*):[^0-9:]*([0-9]+)[^0-9]*([0-9]+)[^0-9]*([\)]+)/;
 var errorRegEx=/^Users of ([^:]*):[^0-9]*(Error)[^0-9]*([0-9]+)[^0-9]*,([^:]*)([\)]+)/;
 var versionTokenRegEx=/\s*([^\s]*)\s+([^\s,]*),\s+([^\s]*)\s+([^\s,]*),\s+([^\s]*)\s+([^\s,]*)/;
-var userTokenRegEx=/([^\s]*)\s+([^\s]*)\s+([^\s]*)\s+\(([^\s]*)\)\s+\(([^\)]*)\),\s+([^\s]*)\s(.*)/;
+var userTokenRegEx=/\s*([^\s]*)\s+([^\s]*)\s+([^\s]*)\s+([^\s]*){0,1}\s*\(([^\s]*)\)\s+\(([^\)]*)\),\s+([^\s]*)\s(.*)/;
 
 // Parse the output of lmutil lmstat and return a JSON array
 // serverURL can be used to test with the output of lmstat stored in a file by sending an array ['test',filePath]
@@ -65,7 +65,7 @@ function lmstat(flexConfig, callback){
   for (var i=0; i<output.length; i++){
     // Line by line
     var line = output[i];
-    var m;
+    var m,n,u,e;
     // Feature line
     m = line.match(featureRegEx);
     if (m) {
@@ -80,34 +80,34 @@ function lmstat(flexConfig, callback){
       };
     }else{
       // Token line with vendor
-      m = line.match(versionTokenRegEx);
-      if (m) {
+      n = line.match(versionTokenRegEx);
+      if (n) {
         // Save the vendor information temporarly
         vendorInfo = {
-          "name" : m[4],
-          "version" : m[2],
-          "expiry" : m[6]
+          "name" : n[4],
+          "version" : n[2],
+          "expiry" : n[6]
         };
       }else{
         // Token line with username and machine
-        m = line.match(userTokenRegEx);
-        if (m) {
+        u = line.match(userTokenRegEx);
+        if (u) {
           // Need the previous lines to know which licence
           result[tokenFeature].tokens.push({
-            "username" : m[1],
-            "machine" : m[2],
-            "started" : m[7],
+            "username" : u[1],
+            "machine" : u[2],
+            "started" : u[7],
             "vendorname" : vendorInfo.name,
             "version" : vendorInfo.version,
             "expiry" : vendorInfo.expiry
           });
         }else{
           // Error lines
-          m = line.match(errorRegEx);
-          if (m) {
-            result[m[1]] = {
-              "total":m[3],
-              "error":m[4]
+          e = line.match(errorRegEx);
+          if (e) {
+            result[e[1]] = {
+              "total" : e[3],
+              "error" : e[4]
             };
           }
         }
