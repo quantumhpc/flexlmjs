@@ -84,7 +84,7 @@ You can use a file containing lmstat output to parse its content
 var config = {
         "flexBinary"    :  "./lmutil",
         "flexCmd"       :  "lmstat -a -c",
-        "serverURL"     :  [ ["test", "/path/to/file.out", "1055@server2"]
+        "serverURL"     :  [ ["test", "/path/to/file.out"] , "1055@server2"]
 }
 ```
 
