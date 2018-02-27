@@ -65,18 +65,6 @@ flexlm.lmstat(config, function(err, output){})
 }
 ```
 
-
-** Multiple servers
-
-You can use an array to specify multiple server urls and return an array of outputs
-```
-var config = {
-        "flexBinary"    :  "./lmutil",
-        "flexCmd"       :  "lmstat -a -c",
-        "serverURL"     :  ["1999@serverURL", "1055@server2"]
-}
-```
-
 ** Test server
 
 You can use a file containing lmstat output to parse its content
