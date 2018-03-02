@@ -20,7 +20,6 @@
  * tort or otherwise, arising from, out of or in connection with the software or the use 
  * or other dealings in the Software.
 */
-
 var cproc = require('child_process');
 var spawn = cproc.spawnSync;
 var fs = require('fs');
@@ -32,8 +31,6 @@ var errorRegEx=/^Users of ([^:]*):[^0-9]*(Error)[^0-9]*([0-9]+)[^0-9]*,([^:]*)([
 var versionTokenRegEx=/\s*([^\s]*)\s+([^\s,]*),\s+([^\s]*)\s+([^\s,]*),\s+([^\s]*)\s+([^\s,]*)/;
 var userTokenRegEx=/\s*([^\s]*)\s+([^\s]*)\s+([^\s]*)\s+([^\s]*){0,1}\s*\(([^\s]*)\)\s+\(([^\)]*)\),\s+([^\s]*)\s(.*)/;
 
-// Parse the output of lmutil lmstat and return a JSON array
-// serverURL can be used to test with the output of lmstat stored in a file by sending an array ['test',filePath]
 function lmstat(flexConfig, callback){
   var result = {};
   var tokenFeature;
@@ -59,7 +56,6 @@ function lmstat(flexConfig, callback){
       return callback(new Error(output.stderr.replace(/\n/g,"")));
   }
   // Treat output
-  // console.log(output.stdout)
   output = output.stdout.split('\n');
   
   for (var i=0; i<output.length; i++){
@@ -120,5 +116,5 @@ function lmstat(flexConfig, callback){
 }
 
 module.exports = {
-    lmstat           : lmstat
+    lmstat  : lmstat
 };
