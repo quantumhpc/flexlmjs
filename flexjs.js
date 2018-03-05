@@ -35,7 +35,7 @@ function lmstat(flexConfig, callback){
   var result = {};
   var tokenFeature;
   var vendorInfo;
-  var flexCmd = flexConfig.flexCmd.trim().split(/\s/g);
+  var flexCmd = flexConfig.cmd.trim().split(/\s/g);
   
   // Create Stream
   var output = [];
@@ -44,7 +44,7 @@ function lmstat(flexConfig, callback){
     output.stdout = outputFile;
   }else{
     flexCmd.push(flexConfig.serverURL);
-    output = spawn(path.resolve(flexConfig.flexBinary + (/^win/.test(process.platform) ? (!flexConfig.flexBinary.endsWith(".exe") ? '.exe' : '') : '')), flexCmd, { encoding : 'utf8' });
+    output = spawn(path.resolve(flexConfig.binary + (/^win/.test(process.platform) ? (!flexConfig.binary.endsWith(".exe") ? '.exe' : '') : '')), flexCmd, { encoding : 'utf8' });
   }
   
   // Invalid lmutil binary

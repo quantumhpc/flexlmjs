@@ -1,5 +1,5 @@
 {
-        "flexBinary"    :  "/opt/flexlm/lmutil",
-        "flexCmd"       :  "lmstat -a -c",
+        "binary"        :  "/opt/flexlm/lmutil",
+        "cmd"           :  "lmstat -a -c",
         "serverURL"     :  "27000@localhost"
-};
+}
