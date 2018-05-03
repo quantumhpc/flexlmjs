@@ -23,6 +23,7 @@
 var cproc = require('child_process');
 var spawn = cproc.spawnSync;
 var fs = require('fs');
+var os = require('os');
 var path = require('path');
 
 // Regex for lmstat output
@@ -53,10 +54,10 @@ function lmstat(flexConfig, callback){
   }
   // Transmit the error if any
   if (output.stderr){
-      return callback(new Error(output.stderr.replace(/\n/g,"")));
+      return callback(new Error(output.stderr.replace(new RegExp(os.EOL,'g'),"")));
   }
   // Treat output
-  output = output.stdout.split('\n');
+  output = output.stdout.split(os.EOL);
   
   for (var i=0; i<output.length; i++){
     // Line by line
