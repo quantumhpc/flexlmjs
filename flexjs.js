@@ -117,5 +117,5 @@ function lmstat(flexConfig, callback){
 }
 
 module.exports = {
-    lmstat  : lmstat
+    lmstat    :   lmstat
 };
